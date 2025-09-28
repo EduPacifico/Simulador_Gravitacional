@@ -33,7 +33,9 @@ namespace anker3
 
             if (button1 != null) button1.Click += button1_Click; //Aleatório
             if (button2 != null) button2.Click += button2_Click; //Executar
+            if (button3 != null) button3.Click += button3_Click; //Pausar
             if (button4 != null) button4.Click += button4_Click; //Gravar
+            if (button5 != null) button5.Click += button5_Click; //Gravar Config Inicial
 
             timer = new Timer();
             timer.Interval = 80;
@@ -150,6 +152,7 @@ namespace anker3
                 interacaoAtual++;
                 splitContainer1.Panel2?.Invalidate();
                 textBox3.Text = $"Interação {interacaoAtual}/{qtdInteracoes}";
+                textBox2.Text = universo.corpos.Count(c => c != null).ToString();
             }
             else
             {
@@ -186,6 +189,64 @@ namespace anker3
             catch(Exception ex)
             {
                 MessageBox.Show("Erro ao salvar: " + ex.Message);
+            }
+        }
+        //Botão Salvar Configuração Inicial
+        private void button5_Click(object sender, EventArgs e)
+        {
+            // Verifica se os corpos já foram gerados.
+            if (universo == null || universo.corpos == null)
+            {
+                MessageBox.Show("Nenhum universo gerado. Gere os corpos primeiro.");
+                return;
+            }
+
+            // A variável interacaoAtual deve estar em 0 para garantir que é a configuração inicial.
+            if (interacaoAtual == 0)
+            {
+                try
+                {
+                    // Reutiliza a mesma lógica do botão "Gravar" para salvar a simulação.
+                    // O valor de qtdIteracoes e tempInteracao pode ser 0 ou o valor padrão,
+                    // pois o objetivo é salvar o estado inicial dos corpos.
+                    using (SaveFileDialog sfd = new SaveFileDialog())
+                    {
+                        sfd.Filter = "Text file (*.txt)|*.txt|All files (*.*)|*.*";
+                        sfd.FileName = "config_inicial.txt"; // Um nome de arquivo diferente
+
+                        if (sfd.ShowDialog() == DialogResult.OK)
+                        {
+                            // Usa a persistência para salvar o estado atual do universo.
+                            persistencia.Salvar(sfd.FileName, universo, 0, 0);
+                            textBox3.Text = "Configuração inicial salva: " + sfd.FileName;
+                            MessageBox.Show("Configuração inicial salva com sucesso!");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao salvar: " + ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("A simulação já foi iniciada. Não é possível salvar a configuração inicial.");
+            }
+        }
+
+        //Botão Pausar
+        private void button3_Click(object sender, EventArgs e)
+        {
+            // Verifica se o timer está rodando
+            if (timer.Enabled)
+            {
+                timer.Stop();
+                //MessageBox.Show("Simulação pausada.");
+            }
+            else
+            {
+                timer.Start();
+                //MessageBox.Show("Simulação retomada.");
             }
         }
         //Desenho no painel

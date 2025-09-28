@@ -129,7 +129,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 20;
-            this.button3.Text = "Carregar";
+            this.button3.Text = "Pausar";
             this.button3.UseVisualStyleBackColor = true;
             // 
             // button2

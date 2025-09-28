@@ -92,7 +92,6 @@ namespace anker3
         public void gerarCorpos(int quantidadeCorpos, double Xmaximo, double Ymaximo, double massaMaxima, double massaMinima)
         {
             var rand = new Random();
-            Universo universo = new Universo(quantidadeCorpos);
             for (int i = 0; i < quantidadeCorpos; i++)
             {
                 String Nome = "Corpo" + (i + 1);
